@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch</title>
+</head>
+<body>
+  <form class="form">
+    <input name="username" type="text" placeholder="Введите имя">
+    <input name="password" type="password" placeholder="Введите пароль">
+    <input name="checkbox" type="checkbox">
+    <button type="submit">Submit</button>
+  </form>
+</body>
+<script>
+  const formObject = document.querySelector('.form');
+  const formData = new FormData(formObject);
+  const data = new URLSearchParams(formData);
+  formObject.addEventListener('submit', event => {
+    event.preventDefault();
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/x-www-form-urlencoded'
+      },
+      body: data
+    }) .then(response => response.json())
+      .then(json => console.log(json)).catch(err => console.log(err))
+  });
+  
+  console.log('Fetch is starting');
+  fetch('https://jsonplaceholder.typicode.com/todos/1')
+      .then(response => response.json())
+      .then(json => console.log(json.title))
+
+</script>
+</html>

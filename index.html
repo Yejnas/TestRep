@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html leng = "ru">
+    <head>
+        <meta charset = "UTF-8">
+        <style>
+            .blackbg{
+                background-color: white;
+            }
+        </style>
+    </head>
+   <body>
+    <input onkeyup="sayMyName();" class="userName">
+    <button onclick="toBlack();" class="themeButton">Black theme</button>
+    <p></p>
+    <button onclick="buyProduct('socks');">Buy socks</button>
+    <button onclick="buyProduct('shirt');">Buy shirt</button>
+    <button onclick="moneyInput();">All</button>
+    <button onclick="cashPlus(1);">+1</button>
+    <button onclick="cashPlus(2);">+2</button>
+    <button onclick="cashCount = 0; moneyInput();">Reset</button>
+    <button onclick="randomMoney();">Gamble</button>
+    <button onclick="saveMoney();">Save</button>
+    <button onclick="moneyPromise().then((m)=>{
+        document.querySelector('.textForAll').innerHTML = '...... '+m;
+    }).catch((m)=>{document.querySelector('.textForAll').innerHTML = '...... '+m;});">Money Check</button>
+    <p class="textForAll"></p>
+    <p class="dateText"></p>
+   </body>
+   <script>
+    const pElement = document.querySelector('.textForAll');
+    let cashCount = JSON.parse(localStorage.getItem('money')) || 0;
+    const products= {name: 'socks', price: 10, name1: 'shirt', price1: 20};
+    function dateDisplay(){
+        document.querySelector('.dateText').innerHTML = new Date();
+    }
+    dateDisplay();
+    
+    function toBlack(){
+        themeButtonElem = document.querySelector('.themeButton');
+        if (themeButtonElem.innerText == 'Black theme'){
+            themeButtonElem.innerText = 'White theme'
+        }
+        else{
+            themeButtonElem.innerText = 'Black theme'
+        }
+    }
+    function moneyInput(){
+        pElement.innerText = `All money: ${cashCount}`;
+    }
+    function buyProduct(nnn){
+        if(nnn === products.name){
+            cashCount = cashCount - products.price;
+            pElement.innerText = `You bow the ${products.name}, ${products.price} spended`;
+        }
+        else{
+            cashCount = cashCount - products.price1;
+            pElement.innerText = `You bow the ${products.name1}, ${products.price1} spended`;
+        }
+    }
+    function cashPlus(number){
+        cashCount = cashCount + number;
+        pElement.innerText = `All money: ${cashCount}`;
+    }
+    function randomMoney(){
+        let randomNumber = Math.floor((Math.random()*201)-100);
+        cashCount = cashCount + randomNumber
+        pElement.innerText = `All money: ${cashCount}`;
+    }
+    function saveMoney(){
+        localStorage.setItem('money', JSON.stringify(cashCount));
+    }
+    /*function sayMyName(event){
+        if(event.key === 'Enter'){
+            pElement.innerText = `Your name is ${document.body.querySelector('.userName').value}`;
+        }  
+    }
+    */
+   function sayMyName(){
+        pElement.innerText = `Your name is ${document.body.querySelector('.userName').value}`;
+   }
+
+
+   function moneyPromise(){
+    return new Promise((resole, rject) => {
+        if(cashCount >100){
+            resole('Ur rich huh');
+        }
+        else{
+            rject('Go and lost poor kid');
+        }
+    })
+   }
+   
+
+   
+   </script>
+</html>
